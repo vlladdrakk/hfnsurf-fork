@@ -113,11 +113,12 @@ class Browser:
 			
 			elif rawcmd != 'q':
 				
-				if not rawcmd.startswith('hfnp://'):
-					rawcmd = f'hfnp://{rawcmd}'
-			
-				self.client.current_uri = URI.from_str(rawcmd)
-		
+				if  rawcmd.startswith('hfnp://'):
+					self.client.current_uri = URI.from_str(rawcmd)
+				else:
+					
+					self.client.current_uri.components = rawcmd.split('/')
+				
 		
 			if rawcmd != 'q':
 				self.client.request_page(self.client.current_uri)

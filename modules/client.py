@@ -142,10 +142,15 @@ class Client:
 		
 	def request_page(self, uri):
 		
+		sz = os.get_terminal_size()
+		colwidth = sz.columns
+		rowheight = sz.lines
+		
 		if uri.host_port == ('0.0.0.0', 0):
 			
 			user = self.user_storage.get_user_by_uri(self.current_ext_uri)
-			content, links, blobs, action_result, uri = self.internal_dispatcher.handle_uri(user, uri)
+			content, links, blobs, action_result, uri = self.internal_dispatcher.handle_uri(user, uri,
+																	colwidth = colwidth, rowheight = rowheight)
 						
 			if content:
 								
@@ -171,9 +176,9 @@ class Client:
 			host, port = uri.host_port[0], uri.host_port[1]
 			
 			if user:
-				np = PageRequest(user, uri)
+				np = PageRequest(user, uri, colwidth = colwidth, rowheight = rowheight)
 			else:
-				np = PageRequest(None, uri) 
+				np = PageRequest(None, uri, colwidth = colwidth, rowheight = rowheight)
 			
 			resp = self.send_request(host, port, np)
 			

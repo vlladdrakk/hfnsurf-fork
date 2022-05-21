@@ -25,7 +25,7 @@ BROWSER_WELCOME_PAGE = \
 """
 <BGCYAN><BLACK><BLD>- - - MENU - - -<NORM>
 
-<RED>[[hfnp://jeuxterm.sgZMwD1T/index]]<NORM> TEST SERVER
+<RED>[[hfnp://hafniumpaging.tiuTdXXR/index]]<NORM> MAIN PAGE
 <GREEN><BLD>[[help]]<NORM> HELP
 ISPAGE ??? <GREEN><BLD>[[usermanage]]<NORM> USER MANAGEMENT
 

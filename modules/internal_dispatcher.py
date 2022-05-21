@@ -27,7 +27,7 @@ class InternalDispatcher:
 		
 		self.client = client
 		
-	def handle_uri(self, user, uri):
+	def handle_uri(self, user, uri, colwidth = None, rowheight = None):
 		
 		page = None
 		if uri.getpart(0) == 'welcome':

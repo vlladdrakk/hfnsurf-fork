@@ -34,17 +34,18 @@ class PageView:
 		
 	def refresh(self):
 		
-		os.system('clear')
-		
-		print(self.content)
-		
 		lns = len(self.content.split('\n'))
 		
 		sz = os.get_terminal_size()
-		wh = sz.lines - lns - 3
+		wh = sz.lines - lns - 5
+		
+		os.system('clear')		
+		print(self.content)		
 		
 		if wh>0:
 			for i in range(0, wh):
 				print('')
 		
+		print('')
+		print('-'*(sz.columns-5))
 		
