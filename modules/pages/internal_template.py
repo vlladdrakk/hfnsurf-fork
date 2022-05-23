@@ -17,21 +17,15 @@ from hafnium.network.paging.page import *
 from hafnium.network.paging.hfnml import *
 from hafnium.network.paging.uri import *
 
+from version import __version__
+
 ###########################################################################
 
 INTERNAL_PAGE_TEMPLATE = """-----------------------------------------------------------------------
 
-<BLD><GOLD>oooo          o888o                                                o888o 
- 888ooooo   o888oo oo oooooo    oooooooo8 oooo  oooo  oo oooooo  o888oo  
- 888   888   888    888   888  888ooooooo  888   888   888    888 888    
- 888   888   888    888   888          888 888   888   888        888    
-o888o o888o o888o  o888o o888o 88oooooo88   888o88 8o o888o      o888o   <NORM>
-
------------------------------------------------------------------------
-
-             <BLD>HFNSurf Browser Internal page system<NORM>
-             <CYAN><BLD>[[welcome]] Welcome page<NORM>
-ISPAGE ???              <BGGOLD><BLACK><BLD>[[{{{URI}}}]]<NORM> Last visited page
+<BLD>HFNSurf Browser v.VERSION Internal page system<NORM>
+<CYAN><BLD>[[i::index]] Index page<NORM>
+ISPAGE ??? <BGGOLD><BLACK><BLD>[[l::{{{URI}}}]]<NORM> Last visited page
 
 -----------------------------------------------------------------------
 <PAGE>
@@ -42,7 +36,7 @@ class InternalHFNMLPage(HFNMLPage):
 	def __init__(self, client, user, uri, template):
 		
 		self.client = client
-		template = INTERNAL_PAGE_TEMPLATE.replace('<PAGE>',template)
+		template = INTERNAL_PAGE_TEMPLATE.replace('VERSION',__version__).replace('<PAGE>',template)
 		
 		super().__init__(None, user, uri, template)
 	

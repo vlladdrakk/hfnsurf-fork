@@ -25,9 +25,21 @@ BROWSER_WELCOME_PAGE = \
 """
 <BGCYAN><BLACK><BLD>- - - MENU - - -<NORM>
 
-<RED>[[hfnp://hafniumpaging.tiuTdXXR/index]]<NORM> MAIN PAGE
+<RED>[[hfnp://hafniumpaging.tiuTdXXR/index]]<NORM> MAIN PAGE OFFLINE
 <GREEN><BLD>[[help]]<NORM> HELP
 ISPAGE ??? <GREEN><BLD>[[usermanage]]<NORM> USER MANAGEMENT
+
+<BGCYAN><BLACK><BLD>- - - WELCOME TO HAFNIUM PAGING! - - -<NORM>
+
+HFNSurf is a Hafnium Paging Protocol browser.
+
+Type <GOLD><BLD>"?"<NORM> or <GOLD><BLD>"help"<NORM> and press ENTER
+to see a quick tutorial.
+
+<GREEN>-------------------------------------------<NORM>
+<GREEN>Visit Hafnium Paging Protocol hfnsite here:<NORM>
+           > > > > <BLD><BGGOLD><BLACK>[[h::hfnp://hafniumpaging.8Ig4sHZ6/index]]<NORM> < < < <
+<GREEN>-------------------------------------------<NORM>
 
 """
 	

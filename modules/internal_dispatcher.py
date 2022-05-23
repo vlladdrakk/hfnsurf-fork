@@ -30,7 +30,7 @@ class InternalDispatcher:
 	def handle_uri(self, user, uri, colwidth = None, rowheight = None):
 		
 		page = None
-		if uri.getpart(0) == 'welcome':
+		if uri.getpart(0) == 'index':
 			page = BrowserWelcomePage(self.client, user, uri)
 			
 		if uri.getpart(0) == 'help':

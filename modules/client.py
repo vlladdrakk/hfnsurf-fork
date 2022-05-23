@@ -48,6 +48,7 @@ class Client:
 		
 		self.current_uri = None
 		self.current_ext_uri = None
+		self.current_int_uri = None
 		
 		try:
 		#if True:
@@ -92,9 +93,6 @@ class Client:
 		response = session.send_netpackage(np)
 		session.mainpipe.underlying_socket.close()
 		
-		if self.debug:
-			print(f'\n- - - RESPONSE CODE: {response.package_code} - - -\n')
-			
 		return response
 		
 		
@@ -154,18 +152,19 @@ class Client:
 						
 			if content:
 								
-				self.page_view.content = content
+				self.page_view.content = content.split('\n')
 				self.page_view.links = dict()
 				
-				for linkno, linklst in links.items():
-					self.page_view.links[linkno] = URI.from_link(linklst)
+				for linkno, link_uri in links.items():
+					self.page_view.links[linkno] = link_uri
 					
 				self.page_view.action_result = action_result
 				self.page_view.blobs = blobs
 				self.current_uri = uri
+				self.current_int_uri = uri
 			
 			else:
-				self.page_view.content = 'Page not found'
+				self.page_view.content = ['Page not found']
 				self.page_view.links = dict()
 				self.page_view.blobs = dict()
 				self.action_result = None
@@ -184,12 +183,12 @@ class Client:
 			
 			if resp.code_is(PAGE_RESPONSE):
 				
-				self.page_view.content = resp.content
+				self.page_view.content = resp.content.split('\n')
 				self.page_view.links = dict()
 				
-				for linkno, linklst in resp.links.items():
+				for linkno, link_uri in resp.links.items():
 					
-					self.page_view.links[linkno] = URI.from_link(linklst)
+					self.page_view.links[linkno] = link_uri
 					
 					self.page_view.action_result = resp.action_result
 					self.page_view.blobs = resp.blobs
@@ -198,13 +197,13 @@ class Client:
 				self.current_ext_uri = resp.uri
 			
 			elif resp.code_is(PAGE_RENDER_FAILED_ERROR):
-				self.page_view.content = 'Page not found'
+				self.page_view.content = ['Page not found']
 				self.page_view.links = dict()
 				self.page_view.blobs = dict()
 				self.action_result = None
 			
 			else:
-				self.page_view.content = 'Impossible error!!!'
+				self.page_view.content = ['Impossible error!!!']
 				self.page_view.links = dict()
 				self.page_view.blobs = dict()
 				self.action_result = None
