@@ -25,26 +25,37 @@ from modules.pages.internal_template import *
 
 ###############################################################################
 
+
 USER_MANAGE_PAGE = \
 """
-<BGCYAN><BLACK><BLD>- - - USER MANAGEMENT - - -<NORM>
-ADDED $$$ <BGGREEN><BLACK>You have successfully added a user<NORM>
-REMOVED $$$ <BGGREEN><BLACK>You have successfully removed a user<NORM>
-ALREADY_EXISTS $$$ <BGRED>This user UID already exists on server. Adding aborted<NORM>
-USER_NOT_FOUND $$$ <BGRED>This user UID does not exist on server. The entry removed from storage.<NORM>
-UNKNOWN_ERROR $$$ <BGRED>Unknown error while adding a user.<NORM>
-UNKNOWN_ERROR_REMOVE $$$ <BGRED>Unknown error while removing a user.<NORM>
+[bg=cyan][fg=256:0][b]- - - USER MANAGEMENT - - -[/norm]``
+`
+[bg=green][fg=256:0]
+[case=ADDED]You have successfully added a user`[/case]
+[case=REMOVED]You have successfully removed a user`[/case]
+[/norm]
+[bg=red][fg=256:0]
+[case=ALREADY_EXISTS]This user UID already exists on server. Adding aborted`[/case]
+[case=USER_NOT_FOUND]This user UID does not exist on server. The entry removed from storage.`[/case]
+[case=UNKNOWN_ERROR]Unknown error while adding a user`[/case]
+[/norm]
 
-ISPAGE !??? <RED><BLD>You have not visited any site yet.<NORM>
+[case=~ISPAGE]
 
-ISPAGE ??? <BLD>LIST OF USERS<NORM>
-ISPAGE ??? <CYAN>This is the list of users you have registered on <NORM><GOLD><BLD>{{ADDRESS}}<NORM>
-
-ISPAGE ??? <BGGREEN><BLACK><BLD>[[usermanage?action=newuser]]<NORM> Create new user
+	[fg=red][b]You have not visited any site yet.`[/norm][/case]
+	
+[case=ISPAGE]
+	[b]LIST OF USERS[/b]`
+	[fg=cyan]This is the list of users you have registered on [/fg][fg=yellow][b]{{ADDRESS}}[/norm]``
+	
+	[bg=green][fg=256:0][b][lnk=usermanage?action=newuser][/lnk][/norm] Create new user``
 {{{USERLIST}}}
 
+[/case]
+
+
 """
-	
+
 class UserManagePage(InternalHFNMLPage):
 	
 	def __init__(self, client, user, uri):
@@ -59,11 +70,11 @@ class UserManagePage(InternalHFNMLPage):
 			isactive = '(------) '
 			
 			if siteuser.active:
-				isactive = '<GOLD><BLD>(ACTIVE)<NORM> '
+				isactive = '[fg=yellow][b](ACTIVE)[/norm] '
 			
-			userlist.append(f'{isactive}{uuid_as_hex(siteuser.uid)} <CYAN>Switch: [[usermanage?action=switch?value0={uuid_as_hex(siteuser.uid)}]] Remove: [[usermanage?action=remove?value0={uuid_as_hex(siteuser.uid)}]]<NORM>')
+			userlist.append(f'{isactive}{uuid_as_hex(siteuser.uid)} [fg=cyan]Switch: [lnk=usermanage?action=switch?value0={uuid_as_hex(siteuser.uid)}][/lnk] Remove: [lnk=usermanage?action=remove?value0={uuid_as_hex(siteuser.uid)}][/lnk][/norm]')
 		
-		return '\n'.join(userlist)
+		return '`\n'.join(userlist)
 				
 				
 	def action_newuser(self):

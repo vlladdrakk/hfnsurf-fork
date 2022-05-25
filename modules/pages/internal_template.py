@@ -21,13 +21,17 @@ from version import __version__
 
 ###########################################################################
 
-INTERNAL_PAGE_TEMPLATE = """-----------------------------------------------------------------------
 
-<BLD>HFNSurf Browser v.VERSION Internal page system<NORM>
-<CYAN><BLD>[[i::index]] Index page<NORM>
-ISPAGE ??? <BGGOLD><BLACK><BLD>[[l::{{{URI}}}]]<NORM> Last visited page
+INTERNAL_PAGE_TEMPLATE = """-----------------------------------------------------------------------`
+`
+[b]HFNSurf Browser v.VERSION Internal page system[/b]``
+[fg=cyan][b][lnk=index]i[/lnk] Index page[/norm]`
 
------------------------------------------------------------------------
+[case=ISPAGE]
+	[bg=yellow][fg=black][b][lnk={{{URI}}}]l[/lnk][/norm] Last visited page`
+[/case]
+
+-----------------------------------------------------------------------`
 <PAGE>
 """
 

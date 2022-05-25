@@ -23,66 +23,66 @@ from modules.pages.internal_template import *
 
 BROWSER_HELP_PAGE = \
 """
-<BGCYAN><BLACK><BLD>- - - HELP SYSTEM - - -<NORM>
+[bg=cyan][fg=256:0][b]- - - HELP SYSTEM - - -[/norm]``
 
 At the bottom of your screen there's an URL line and a prompt.
-You can issue commands using this prompt.
+You can issue commands using this prompt.``
 
-You can see that your URL line says <BLD>hfnp://0.0.0.0:0/help<NORM>.
-Let's break it down.
+You can see that your URL line says [b]hfnp://0.0.0.0:0/help[/b].`
+Let's break it down.``
 
-<GOLD>hfnp://<NORM> is the shorthand name of the protocol that's used.
+[fg=yellow]hfnp://[/fg] is the shorthand name of the protocol that's used.``
 
-<GOLD>0.0.0.0:0<NORM> is (normally) an IP or a (quasi)domain name of a
-server which you're currently browsing.
+[fg=yellow]0.0.0.0:0[/fg] is (normally) an IP or a (quasi)domain name of a
+server which you're currently browsing.``
 
-Right now, though, you're looking at your browser's internal technical 
-page, and such pages are assigned a 0.0.0.0 as a pseudo-IP, and 0 as a 
-pseudo-port. Don't worry about these. It's kind of like "about:config" 
-in Mozilla Firefox.
+Right now, though, you're looking at your browser's internal technical `
+page, and such pages are assigned a 0.0.0.0 as a pseudo-IP, and 0 as a `
+pseudo-port. Don't worry about these. It's kind of like "about:config" `
+in Mozilla Firefox.``
 
-<GOLD>help<NORM> is the name of the page on a server that you're browsing
-right now. A server may have a lot of pages and other things.
+[fg=yellow]help[/fg] is the name of the page on a server that you're browsing`
+right now. A server may have a lot of pages and other things.``
 
-<CYAN><BLD>Dealing with big pages<NORM>
+[fg=cyan][b]Dealing with big pages[/norm]``
 
-Some pages are bigger than your terminal window (most likely, this page too).
-Here's how to deal with it:
+Some pages are bigger than your terminal window (most likely, this page too).`
+Here's how to deal with it:``
 
-* Press <CYAN>RETURN<NORM> (that is, issue an empty command) to view 
-the next portion of your page.
-* Issue a <CYAN>"-"<NORM> (minus, or dash) command to view the previous portion. 
-* Issue a <CYAN>"="<NORM> command to return to the beginning of the page.
+* Press [fg=cyan]RETURN[/fg] (that is, issue an empty command) to view `
+the next portion of your page.`
+* Issue a [fg=cyan]"-"[/fg] (minus, or dash) command to view the previous portion. `
+* Issue a [fg=cyan]"="[/fg] command to return to the beginning of the page.``
 
-<CYAN><BLD>Links<NORM>
+[fg=cyan][b]Links[/norm]``
 
-On the pages you will see a lot of links, which look like numbers or strings
-enclosed in square brackets like this: [[i::index]], [[index]].
+On the pages you will see a lot of links, which look like numbers or strings`
+enclosed in square brackets like this: [lnk=index]i[/lnk], [lnk=index][/lnk].``
 
-These are links that you can follow. To follow a link, just write its label
-(a number, a letter or a whole string) and press <CYAN>RETURN<NORM>. Try any of
-these two links - they will both bring you back to the index page of the browser's
-internal system. Then use <CYAN>"?"<NORM> or <CYAN>"help"<NORM> to return here.
+These are links that you can follow. To follow a link, just write its label`
+(a number, a letter or a whole string) and press [fg=cyan]RETURN[/fg]. Try any of`
+these two links - they will both bring you back to the index page of the browser's`
+internal system. Then use [fg=cyan]"?"[/fg] or [fg=cyan]"help"[/fg] to return here.``
 
-<CYAN><BLD>Other commands<NORM>
+[fg=cyan][b]Other commands[/norm]`
 
-* Use <CYAN><BLD>.q<NORM> to quit the browser.
+* Use [fg=cyan][b].q[/norm] to quit the browser.`
 
-* Use <CYAN><BLD>.<NORM> to switch between your last page you've visited and the
-browser's internal system.
+* Use [fg=cyan][b].[/norm] to switch between your last page you've visited and the`
+browser's internal system.``
 
-* Use <CYAN><BLD>/<NORM> to visit the index page of your current server.
+* Use [fg=cyan][b]/[/norm] to visit the index page of your current server.`
 
-* Use <CYAN><BLD>/pagename<NORM> to visit a page named "pagename" on the
-current server.
+* Use [fg=cyan][b]/pagename[/norm] to visit a page named "pagename" on the`
+current server.``
 
-* Write an entire URI, like <CYAN><BLD>hfnp://0.0.0.0:0/help<NORM> to visit that page.
+* Write an entire URI, like [fg=cyan][b]hfnp://0.0.0.0:0/help[/norm] to visit that page.``
 
-* Use <CYAN><BLD>.r<NORM> to refresh the page you're currently reading.
+* Use [fg=cyan][b].r[/norm] to refresh the page you're currently reading.``
 
-* Use <CYAN><BLD>:actionname value0 "value1 with spaces"<NORM> to invoke an action
-named "actionname" with parameters "value0" and "value1 with spaces" on the
-page you're currently browsing.
+* Use [fg=cyan][b]:actionname value0 "value1 with spaces"[/norm] to invoke an action`
+named "actionname" with parameters "value0" and "value1 with spaces" on the`
+page you're currently browsing.``
 
 """
 	

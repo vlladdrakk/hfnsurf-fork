@@ -20,29 +20,35 @@ from hafnium.network.paging.uri import *
 from modules.pages.internal_template import *
 
 ###############################################################################
-
+	
 BROWSER_WELCOME_PAGE = \
 """
-<BGCYAN><BLACK><BLD>- - - MENU - - -<NORM>
+[bg=cyan][fg=256:0][b]- - - MENU - - -[/norm]
+`
+`[fg=red][lnk=hfnp://hafniumpaging.tiuTdXXR/index][/lnk][/norm] MAIN PAGE OFFLINE
+`[fg=green][b][lnk=help][/lnk][/norm] HELP
 
-<RED>[[hfnp://hafniumpaging.tiuTdXXR/index]]<NORM> MAIN PAGE OFFLINE
-<GREEN><BLD>[[help]]<NORM> HELP
-ISPAGE ??? <GREEN><BLD>[[usermanage]]<NORM> USER MANAGEMENT
+[case=ISPAGE]
+`	[fg=green][b][lnk=usermanage][/lnk][/norm] USER MANAGEMENT
+[/case]
 
-<BGCYAN><BLACK><BLD>- - - WELCOME TO HAFNIUM PAGING! - - -<NORM>
+`
+`[bg=cyan][fg=256:0][b]- - -WELCOME TO HAFNIUM PAGING! - - -[/norm]
+`
+`HFNSurf is a Hafnium Paging Protocol browser.
+`
+`Type [u][fg=yellow][b]"?"[/fg] or [fg=yellow]"help"[/norm] and press ENTER
+`to see a quick tutorial.
+`
 
-HFNSurf is a Hafnium Paging Protocol browser.
-
-Type <GOLD><BLD>"?"<NORM> or <GOLD><BLD>"help"<NORM> and press ENTER
-to see a quick tutorial.
-
-<GREEN>-------------------------------------------<NORM>
-<GREEN>Visit Hafnium Paging Protocol hfnsite here:<NORM>
-           > > > > <BLD><BGGOLD><BLACK>[[h::hfnp://hafniumpaging.8Ig4sHZ6/index]]<NORM> < < < <
-<GREEN>-------------------------------------------<NORM>
+`[fg=green]-------------------------------------------
+`Visit Hafnium Paging Protocol hfnsite here:[/norm]
+`	   > > > > [b][bg=yellow][fg=256:0][lnk=hfnp://hafniumpaging.8Ig4sHZ6/index]h[/lnk][/norm] < < < <
+`[fg=green]-------------------------------------------[/norm]
 
 """
-	
+
+
 class BrowserWelcomePage(InternalHFNMLPage):
 	
 	def __init__(self, client, user, uri):
