@@ -85,7 +85,7 @@ class UserManagePage(InternalHFNMLPage):
 			
 			user = User()
 		
-			np = AddUserRequest(user.uid)
+			np = AddUserRequest(user.uid, self.client.current_ext_uri)
 			resp = self.client.send_request(hostport[0], hostport[1], np)
 			
 			if resp.code_is(USER_ADDED_RESPONSE):
@@ -117,7 +117,7 @@ class UserManagePage(InternalHFNMLPage):
 			uid = uuid_from_hex(self.uri.payload['value0'])
 			hostport = self.client.current_ext_uri.host_port
 					
-			np = RemoveUserRequest(uid)
+			np = RemoveUserRequest(uid, self.client.current_ext_uri)
 			resp = self.client.send_request(hostport[0], hostport[1], np)
 			
 			if resp.code_is(GENERAL_SUCCESS_RESPONSE):
@@ -125,13 +125,12 @@ class UserManagePage(InternalHFNMLPage):
 				self.client.user_storage.remove_user(hostport[0], hostport[1], uid)
 				self.action_result.add('REMOVED')
 				
-			elif resp.code_is(USER_NOT_FOUND_ERROR):
+			elif resp.code_is(USER_NOT_FOUND):
 				
 				self.client.user_storage.remove_user(hostport[0], hostport[1], uid)
 				self.action_result.add('USER_NOT_FOUND')
 				
 			else:
-				
 				self.action_result.add('UNKNOWN_ERROR_REMOVE')
 				
 		

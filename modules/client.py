@@ -24,12 +24,27 @@ from hafnium.network.paging.netpackages import *
 from hafnium.network.paging.user import *
 from hafnium.network.paging.uri import *
 from hafnium.network.paging.processors import *
+from hafnium.network.paging.seqstage import *
+from hafnium.network.paging.exceptions import *
 
 from modules.view import *
+from modules.colors import *
 from modules.user_storage import *
 from modules.internal_dispatcher import *
+from processors.inbuilt_processor import *
+from processors.seqhash_processor import *
 
 ###############################################################################
+
+def error_template(code, msg):
+	
+	res = "+ + + + + + AN ERROR HAS OCCURED + + + + + +\n"
+	res += f"Error code: {code}\n"
+	res += f"Error message: {msg}\n"
+	res += "+ + + + + + + + + + +  + + + + + + + + + + +\n"
+	
+	return red(res).split('\n')
+
 
 class Client:
 	
@@ -43,8 +58,9 @@ class Client:
 		self.page_view = PageView(self)
 		
 		self.internal_dispatcher = InternalDispatcher(self)
-					
-		self.processors = {'generic': GenericClientSideProcessor('generic')} # {name: Processor}
+		
+		self.inbuilt_processor = DefaultInbuiltClientProcessor(self)
+		self.processors = {"seqhash_auth": SeqhashAuthClientProcessor()} # {name: Processor}
 		
 		self.current_uri = None
 		self.current_ext_uri = None
@@ -56,6 +72,24 @@ class Client:
 		except:
 			self.save_state()
 		
+		self.sequence_stages = {
+			'c01': ClientSequenceStage('c01', 'form_handshake_request', self.inbuilt_processor, self),
+			'c02': ClientSequenceStage('c02', 'finalize_handshake_request', self.inbuilt_processor, self),
+			'c03': ClientSequenceStage('c03', 'postpack_handshake_request', self.inbuilt_processor, self),
+			'c09': ClientSequenceStage('c09', 'preunpack_handshake_response', self.inbuilt_processor, self),
+			'c10': ClientSequenceStage('c10', 'clean_handshake_response', self.inbuilt_processor, self),
+			'c11': ClientSequenceStage('c11', 'form_request', self.inbuilt_processor, self),
+			'c12': ClientSequenceStage('c12', 'finalize_request', self.inbuilt_processor, self),
+			'c13': ClientSequenceStage('c13', 'postpack_request', self.inbuilt_processor, self),
+			'c22': ClientSequenceStage('c22', 'preunpack_response', self.inbuilt_processor, self),
+			'c23': ClientSequenceStage('c23', 'unpack_blobs', self.inbuilt_processor, self),
+			'c24': ClientSequenceStage('c24', 'clean_response', self.inbuilt_processor, self),
+		}
+		
+	def stage(self, code):
+		
+		if code in self.sequence_stages:
+			return self.sequence_stages[code]
 	
 	def save_state(self):
 		
@@ -63,7 +97,7 @@ class Client:
 		
 		sv.users = self.user_storage.save_state()
 		sv.processors = self.save_processors_state()
-		
+				
 		with open('config.bin', 'wb') as cfg:
 			cfg.write(sv.pack())
 	
@@ -76,135 +110,162 @@ class Client:
 		sv.unpack(statebin)
 			
 		self.user_storage.load_state(sv.users)
+		self.load_processors_state(sv.processors)
 		
 		
 	def save_processors_state(self):
 		
-		return dict()
+		res = dict()
+		for proc_name, processor in self.processors.items():
+			
+			res[proc_name] = processor.storage.pack()
+			
+		return res
+		
+	def load_processors_state(self, dct):
+				
+		for proc_name, state in dct.items():
+			if proc_name in self.processors:
+				self.processors[proc_name].storage.unpack(state)
 				
 		
 	def send_netpackage(self, host, port, np):
 		
-		session = OneWaySocketSession(host, port)
-		session.connect(host, port)
+		try:
+			session = OneWaySocketSession(host, port)
+			session.connect(host, port)
 		
-		np.session_id = session.session_id
-		
-		response = session.send_netpackage(np)
-		session.mainpipe.underlying_socket.close()
-		
-		return response
-		
-		
-	def send_handshake(self, host, port):
-		
-		sequence_id = new_uuid()
-		
-		np = HandshakeRequest()
-		np.set_sequence_id(sequence_id)
-		
-		resp = self.send_netpackage(host, port, np)
-		
-		return sequence_id, resp.req_queue, resp.resp_queue, resp.sequence_data
-		
-		
-	def send_request(self, host, port, np):
-		
-		sequence_id, req_queue, resp_queue, sequence_data = self.send_handshake(host, port)
-		np.set_sequence_id(sequence_id)
-		
-		for proc_name in sequence_data:
+			np.session_id = session.session_id
 			
-			if proc_name in self.processors:
-				processor = self.processors[proc_name]
-				processor.accept_sequence_data(sequence_data[proc_name])
+			response = session.send_netpackage(np)
+			session.mainpipe.underlying_socket.close()
 		
-		for proc_name in req_queue:
+			return response
 			
-			if (proc_name in self.processors):
+		except TimeoutError:
+			raise ConnectionTimeout
+			
+		except ConnectionRefusedError:
+			raise ConnectionRefused
+			
+		except:
+			raise
 				
-				processor = self.processors[proc_name]
-				np = processor.additionally_process_request(np)
-				
-		resp = self.send_netpackage(host, port, np)
+	def send_request(self, host, port, request):
 		
-		for proc_name in resp_queue:
-			
-			if (proc_name in self.processors):
-				
-				processor = self.processors[proc_name]				
-				resp = processor.additionally_process_response(resp)
-				
+		processors = [self.processors[procname] for procname in self.processors]
+		
+		hs_request = HandshakeRequest()
+		
+		hs_request = self.stage('c01').execute(processors, hs_request)
+		hs_request = self.stage('c02').execute(processors, hs_request)
+		hs_request = self.stage('c03').execute(processors, hs_request)
+		
+		resp = self.send_netpackage(host, port, hs_request)
+		
+		resp = self.stage('c09').execute(processors, resp)
+		resp = self.stage('c10').execute(processors, resp)
+		
+		processors = [self.processors[procname] for procname in resp.proc_queue]
+		request.set_sequence_id(resp.sequence_id)
+		
+		request = self.stage('c11').execute(processors, request)
+		request = self.stage('c12').execute(processors, request)
+		request = self.stage('c13').execute(processors, request)
+		
+		resp = self.send_netpackage(host, port, request)
+		
+		resp = self.stage('c22').execute(processors[::-1], resp)
+		resp = self.stage('c23').execute(processors[::-1], resp)
+		resp = self.stage('c24').execute(processors[::-1], resp)
+		
 		return resp
 		
 		
 	def request_page(self, uri):
 		
-		sz = os.get_terminal_size()
-		colwidth = sz.columns
-		rowheight = sz.lines
-		
-		if uri.host_port == ('0.0.0.0', 0):
+		try:
+		#if True:
+			sz = os.get_terminal_size()
+			colwidth = sz.columns
+			rowheight = sz.lines
 			
-			user = self.user_storage.get_user_by_uri(self.current_ext_uri)
-			content, links, blobs, action_result, uri = self.internal_dispatcher.handle_uri(user, uri,
-																	colwidth = colwidth, rowheight = rowheight)
+			if uri.host_port == ('0.0.0.0', 0):
+				
+				user = self.user_storage.get_user_by_uri(self.current_ext_uri)
+				content, links, blobs, action_result, uri = self.internal_dispatcher.handle_uri(user, uri,
+																		colwidth = colwidth, rowheight = rowheight)
+							
+				if content:
+									
+					self.page_view.content = content.split('\n')
+					self.page_view.links = dict()
+					
+					for linkno, link_uri in links.items():
+						self.page_view.links[linkno] = link_uri
 						
-			if content:
-								
-				self.page_view.content = content.split('\n')
-				self.page_view.links = dict()
+					self.page_view.action_result = action_result
+					self.page_view.blobs = blobs
+					self.current_uri = uri
+					self.current_int_uri = uri
 				
-				for linkno, link_uri in links.items():
-					self.page_view.links[linkno] = link_uri
+				else:
+					self.page_view.content = ['Page not found']
+					self.page_view.links = dict()
+					self.page_view.blobs = dict()
+					self.action_result = None
 					
-				self.page_view.action_result = action_result
-				self.page_view.blobs = blobs
-				self.current_uri = uri
-				self.current_int_uri = uri
-			
 			else:
-				self.page_view.content = ['Page not found']
-				self.page_view.links = dict()
-				self.page_view.blobs = dict()
-				self.action_result = None
 				
-		else:
-			
-			user = self.user_storage.get_user_by_uri(uri)
-			host, port = uri.host_port[0], uri.host_port[1]
-			
-			if user:
-				np = PageRequest(user, uri, colwidth = colwidth, rowheight = rowheight)
-			else:
-				np = PageRequest(None, uri, colwidth = colwidth, rowheight = rowheight)
-			
-			resp = self.send_request(host, port, np)
-			
-			if resp.code_is(PAGE_RESPONSE):
+				user = self.user_storage.get_user_by_uri(uri)
+				host, port = uri.host_port[0], uri.host_port[1]
 				
-				self.page_view.content = resp.content.split('\n')
-				self.page_view.links = dict()
+				if user:
+					np = PageRequest(user, uri, colwidth = colwidth, rowheight = rowheight)
+				else:
+					np = PageRequest(None, uri, colwidth = colwidth, rowheight = rowheight)
 				
-				for linkno, link_uri in resp.links.items():
+				resp = self.send_request(host, port, np)
+				
+				if resp.code_is(PAGE_RESPONSE):
 					
-					self.page_view.links[linkno] = link_uri
+					self.page_view.content = resp.content.split('\n')
+					self.page_view.links = dict()
 					
-					self.page_view.action_result = resp.action_result
-					self.page_view.blobs = resp.blobs
+					for linkno, link_uri in resp.links.items():
+						
+						self.page_view.links[linkno] = link_uri
+						
+						self.page_view.action_result = resp.action_result
+						self.page_view.blobs = resp.blobs
+					
+					self.current_uri = resp.uri
+					self.current_ext_uri = resp.uri
 				
-				self.current_uri = resp.uri
-				self.current_ext_uri = resp.uri
-			
-			elif resp.code_is(PAGE_RENDER_FAILED_ERROR):
-				self.page_view.content = ['Page not found']
-				self.page_view.links = dict()
-				self.page_view.blobs = dict()
-				self.action_result = None
-			
-			else:
-				self.page_view.content = ['Impossible error!!!']
-				self.page_view.links = dict()
-				self.page_view.blobs = dict()
-				self.action_result = None
+				elif resp.package_code >= 6000:
+					
+					self.page_view.content = error_template(str(resp.package_code), resp.text)
+					self.page_view.links = dict()
+					self.page_view.blobs = dict()
+					self.action_result = None
 				
+				else:
+					self.page_view.content = ['This is an impossible error. It should not have happened. You are probably a magician.']
+					self.page_view.links = dict()
+					self.page_view.blobs = dict()
+					self.action_result = None
+				
+		except GenericHafniumPagingException as e:
+			
+			self.page_view.content = error_template(str(e.code), e.msg)
+			self.page_view.links = dict()
+			self.page_view.blobs = dict()
+			self.action_result = None
+		"""	
+		except:
+			
+			self.page_view.content = error_template(str(UNKNOWN_CLIENT_ERROR), "An unknown client-side error has occured.")
+			self.page_view.links = dict()
+			self.page_view.blobs = dict()
+			self.action_result = None
+		"""
