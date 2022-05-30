@@ -144,3 +144,12 @@ class UserStorage:
 					siteuser.active = False
 			
 		self.client.save_state()
+		
+		
+	def set_no_user_active(self, host, port):
+		
+		if (host, port) in self.users:
+			for siteuser in self.users[(host, port)]:
+				siteuser.active = False
+			
+		self.client.save_state()

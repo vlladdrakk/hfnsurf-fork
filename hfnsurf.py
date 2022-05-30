@@ -52,57 +52,86 @@ class Browser:
 		uri = URI.from_str(rawcmd)
 		
 		self.client.request_page(uri)
-		self.client.page_view.refresh()		
+		self.client.page_view.refresh()	
+			
+		request_needed = False
 		
 		while not cmd=='.q':
 						
 			rawcmd = input(self.prompt())
 			
-			if not (rawcmd in ('.q','-','=')) and (rawcmd.replace(' ','') != ''):
-				
+			#if not (rawcmd in ('.q','.l','.=')) and (rawcmd.replace(' ','') != ''):
+			if request_needed:
+					
 				if self.client.current_ext_uri:
 					self.client.current_ext_uri.payload = dict()
 					
 				if self.client.current_uri:
 					self.client.current_uri.payload = dict()
 							
+			request_needed = False
+			
 			if rawcmd == '.':
 				
 				if self.client.current_uri.host_port == ('0.0.0.0',0):
+					
 					if self.client.current_ext_uri:
+						
 						self.client.current_uri = self.client.current_ext_uri
+						request_needed = True
+						
 				else:
+					
 					self.client.current_uri = self.client.current_int_uri
+					request_needed = True
 				
 			elif rawcmd.replace(' ','') == '':
 				
-				self.client.page_view.current_portion += 1
+				if self.client.page_view.scroll_back:
+					
+					if self.client.page_view.current_line > 0:
+						self.client.page_view.current_line -= 1
+					
+				else:
+					self.client.page_view.current_line += 1
+					
 				self.client.page_view.refresh()
 				
 			elif rawcmd == '/':
+				
 				self.client.current_uri.components = ('index',) 
+				request_needed = True
 					
 				
 			elif rawcmd == '.r':
-				pass
+				request_needed = True
 				
-			elif rawcmd == '-':
+			elif rawcmd == '.l':
 				
-				if self.client.page_view.current_portion > 0:
-					self.client.page_view.current_portion -= 1
-
+				self.client.page_view.scroll_back = not self.client.page_view.scroll_back
+				
+				if self.client.page_view.scroll_back:
+					
+					if self.client.page_view.current_line > 0:
+						self.client.page_view.current_line -= 1
+					
+				else:
+					self.client.page_view.current_line += 1
+					
 				self.client.page_view.refresh()
 				
-			elif rawcmd == '=':
+			elif rawcmd == '.=':
 				
-				self.client.page_view.current_portion = 0
-
+				self.client.page_view.current_line = 0
+				self.client.page_view.scroll_back = False
+				
 				self.client.page_view.refresh()
 				
 			elif rawcmd in ('?','help'):
 				
 				rawcmd = f'hfnp://0.0.0.0:0/help'
 				self.client.current_uri = URI.from_str(rawcmd)
+				request_needed = True
 			
 				
 			elif rawcmd.startswith(':'):
@@ -120,36 +149,42 @@ class Browser:
 					self.client.current_uri.set_payload(f'value{i}', arg)
 					
 				self.client.current_uri.set_payload('action',cmd)
+				request_needed = True
 				
 				
 			elif rawcmd in self.client.page_view.links:
 					
 				self.client.current_uri = self.client.page_view.links[rawcmd]
-			
+				request_needed = True
+				
 			elif rawcmd != '.q':
 				
 				if rawcmd.startswith('hfnp://'):
+					
 					self.client.current_uri = URI.from_str(rawcmd)
+					request_needed = True
 					
 				elif rawcmd.startswith('/'):
 					
-					#if self.client.current_uri.host_port == ('0.0.0.0',0):
-					#	rawcmd = f'hfnp://0.0.0.0:0/{rawcmd[1:]}'
-					#	self.client.current_uri = URI.from_str(rawcmd)
-					#else:
 					self.client.current_uri.components = rawcmd[1:].split('/')
+					request_needed = True
 				
 		
-			if not (rawcmd in ('.q','-','=')) and (rawcmd.replace(' ','') != ''):
-				self.client.request_page(self.client.current_uri)
+			#if not (rawcmd in ('.q','.l','.=')) and (rawcmd.replace(' ','') != ''):
+			if request_needed:
 				
-				self.client.page_view.current_portion = 0
+				self.client.request_page(self.client.current_uri)
+				self.client.page_view.scroll_back = False 
+				self.client.page_view.current_line = 0
 				self.client.page_view.refresh()	
 			
 			elif rawcmd == '.q':
 				cmd = '.q'	
 				print('\nThank you for using hfnsurf.')
+				
+			else:
 			
+				self.client.page_view.refresh()	
 
 BROWSER = Browser()
 BROWSER.run()

@@ -25,7 +25,7 @@ BROWSER_WELCOME_PAGE = \
 """
 [bg=cyan][fg=256:0][b]- - - MENU - - -[/norm]
 `
-`[fg=red][lnk=hfnp://hafniumpaging.TIUtDxxr/index][/lnk][/norm] MAIN PAGE OFFLINE
+`[fg=red][lnk=hfnp://hafnium.nPxMa1ziTfw$/index][/lnk][/norm] MAIN PAGE OFFLINE
 `[fg=green][b][lnk=help][/lnk][/norm] HELP
 
 [case=ISPAGE]
@@ -43,7 +43,7 @@ BROWSER_WELCOME_PAGE = \
 
 `[fg=green]-------------------------------------------
 `Visit Hafnium Paging Protocol hfnsite here:[/norm]
-`	   > > > > [b][bg=yellow][fg=256:0][lnk=hfnp://hafniumpaging.8Ig4sHZ6/index]h[/lnk][/norm] < < < <
+`	   > > > > [b][bg=yellow][fg=256:0][lnk=hfnp://hafnium.D4GREATu/index]h[/lnk][/norm] < < < <
 `[fg=green]-------------------------------------------[/norm]
 
 """

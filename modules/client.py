@@ -261,11 +261,12 @@ class Client:
 			self.page_view.links = dict()
 			self.page_view.blobs = dict()
 			self.action_result = None
-		"""	
-		except:
+		
+		except Exception as e:
 			
-			self.page_view.content = error_template(str(UNKNOWN_CLIENT_ERROR), "An unknown client-side error has occured.")
+			self.page_view.content = error_template(str(UNKNOWN_CLIENT_ERROR), f"An unknown client-side error has occured: {e}")
 			self.page_view.links = dict()
 			self.page_view.blobs = dict()
 			self.action_result = None
-		"""
+		
+		

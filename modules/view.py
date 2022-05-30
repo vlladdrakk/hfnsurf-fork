@@ -33,10 +33,52 @@ class PageView:
 		self.action_result = None
 		
 		self.active = False
-		self.current_portion = 0
 		
+		self.current_line = 0
+		
+		self.scroll_back = False
 		
 	def refresh(self):
+		
+		sz = os.get_terminal_size()
+		wh = sz.lines - 5
+		
+		startline = min(len(self.content),self.current_line)
+		endline = min(len(self.content),(self.current_line+wh))
+		
+		portion = self.content[startline:endline]
+		
+		if len(portion)==0 and self.current_line > 0 and len(self.content)>0:
+			self.current_line -= 1
+			self.refresh()
+			return
+				
+		os.system('clear')
+		wh -= len(portion)
+		
+		print('\n'.join(portion))
+		
+		if wh>0:
+			for i in range(0, wh):
+				print('')
+		
+		print('')
+		totalscr = len(self.content)
+		
+		if len(self.content) > 0:
+			scroll = int((self.current_line / len(self.content)) * 100)
+		else:
+			scroll = 100
+		indicator = f'{scroll}%'
+		#print(clr('<< MINUS'+'---'+scroll+'-'*(sz.columns-25-len(scroll))+'RETURN >>',fg=BLACK,bg=PURPLE))
+		
+		if self.scroll_back:
+			print(clr(f'BCK-(".l" to scroll forward, ".=" to jump to start)-{"-"*(sz.columns-59-len(indicator))}-{indicator}-',fg=BLACK,bg=PURPLE))
+		else:
+			print(clr(f'FWD-(".l" to scroll back, ".=" to jump to start)----{"-"*(sz.columns-59-len(indicator))}-{indicator}-',fg=BLACK,bg=PURPLE))
+		
+		
+	def refresh_old(self):
 		
 		sz = os.get_terminal_size()
 		wh = sz.lines - 5
@@ -44,8 +86,8 @@ class PageView:
 		startline = min(len(self.content),self.current_portion*wh)
 		endline = min(len(self.content),(self.current_portion+1)*wh)
 		
-		startline = self.current_portion*wh
-		endline = (self.current_portion+1)*wh
+		startline = int(self.current_portion*wh)
+		endline = int((self.current_portion+1)*wh)
 		portion = self.content[startline:endline]
 		
 		if len(portion)==0 and self.current_portion > 0:

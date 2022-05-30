@@ -48,7 +48,8 @@ USER_MANAGE_PAGE = \
 	[b]LIST OF USERS[/b]`
 	[fg=cyan]This is the list of users you have registered on [/fg][fg=yellow][b]{{ADDRESS}}[/norm]``
 	
-	[bg=green][fg=256:0][b][lnk=usermanage?action=newuser][/lnk][/norm] Create new user``
+	[bg=green][fg=256:0][b][lnk=usermanage?action=newuser][/lnk][/norm] Create new user`
+	[bg=green][fg=256:0][b][lnk=usermanage?action=asguest][/lnk][/norm] Revert to viewing as guests``
 {{{USERLIST}}}
 
 [/case]
@@ -110,6 +111,16 @@ class UserManagePage(InternalHFNMLPage):
 		self.client.user_storage.set_user_active(hostport[0], hostport[1], uid)
 		self.action_result.add('SWITCHED')
 	
+	
+	def action_asguest(self):
+		
+		hostport = self.client.current_ext_uri.host_port
+		
+		self.client.user_storage.set_no_user_active(hostport[0], hostport[1])
+		
+		self.action_result.add('ASGUEST')
+		
+		
 	def action_remove(self):
 		
 		if self.client.current_ext_uri:
@@ -144,8 +155,8 @@ class UserManagePage(InternalHFNMLPage):
 			
 		self.set_field('URI', str(self.client.current_ext_uri))
 		
-		if self.client.current_ext_uri.address:
-			self.set_field('ADDRESS', self.client.current_ext_uri.address)
+		if self.client.current_ext_uri.quasidomain:
+			self.set_field('ADDRESS', self.client.current_ext_uri.quasidomain)
 		else:
 			self.set_field('ADDRESS', self.client.current_ext_uri.host_port_str)
 			

@@ -34,7 +34,7 @@ Let's break it down.``
 [fg=yellow]hfnp://[/fg] is the shorthand name of the protocol that's used.``
 
 [fg=yellow]0.0.0.0:0[/fg] is (normally) an IP or a (quasi)domain name of a
-server which you're currently browsing.``
+server which you're currently browsing, or a proper domain name+port pair.``
 
 Right now, though, you're looking at your browser's internal technical `
 page, and such pages are assigned a 0.0.0.0 as a pseudo-IP, and 0 as a `
@@ -44,15 +44,15 @@ in Mozilla Firefox.``
 [fg=yellow]help[/fg] is the name of the page on a server that you're browsing`
 right now. A server may have a lot of pages and other things.``
 
-[fg=cyan][b]Dealing with big pages[/norm]``
+[fg=cyan][b]Scrolling pages[/norm]``
 
-Some pages are bigger than your terminal window (most likely, this page too).`
-Here's how to deal with it:``
+You can scroll pages in HFNSurf.`
+To do that, you should use the following commands:``
 
-* Press [fg=cyan]RETURN[/fg] (that is, issue an empty command) to view `
-the next portion of your page.`
-* Issue a [fg=cyan]"-"[/fg] (minus, or dash) command to view the previous portion. `
-* Issue a [fg=cyan]"="[/fg] command to return to the beginning of the page.``
+* Press [fg=cyan]RETURN[/fg] (that is, issue an empty command) to scroll `
+one line back or forward, depending on the current setting..`
+* Issue a [fg=cyan]".l"[/fg] command to switch between scrolling forward and backward. `
+* Issue a [fg=cyan]".="[/fg] command to return to the beginning of the page.``
 
 [fg=cyan][b]Links[/norm]``
 
