@@ -49,7 +49,7 @@ USER_MANAGE_PAGE = \
 	[fg=cyan]This is the list of users you have registered on [/fg][fg=yellow][b]{{ADDRESS}}[/norm]``
 	
 	[bg=green][fg=256:0][b][lnk=usermanage?action=newuser][/lnk][/norm] Create new user`
-	[bg=green][fg=256:0][b][lnk=usermanage?action=asguest][/lnk][/norm] Revert to viewing as guests``
+	[bg=green][fg=256:0][b][lnk=usermanage?action=asguest][/lnk][/norm] Revert to viewing as guest``
 {{{USERLIST}}}
 
 [/case]

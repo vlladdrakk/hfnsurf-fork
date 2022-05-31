@@ -3,8 +3,9 @@
 __pycache__/
 *.py[cod]
 *$py.class
-
+dist/
 *.bin
+distribute.sh
 
 # C extensions
 *.so

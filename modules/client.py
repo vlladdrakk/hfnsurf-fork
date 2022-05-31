@@ -248,12 +248,16 @@ class Client:
 					self.page_view.links = dict()
 					self.page_view.blobs = dict()
 					self.action_result = None
+					self.current_uri = uri
+					self.current_ext_uri = uri
 				
 				else:
 					self.page_view.content = ['This is an impossible error. It should not have happened. You are probably a magician.']
 					self.page_view.links = dict()
 					self.page_view.blobs = dict()
 					self.action_result = None
+					self.current_uri = uri
+					self.current_ext_uri = uri
 				
 		except GenericHafniumPagingException as e:
 			
@@ -261,6 +265,8 @@ class Client:
 			self.page_view.links = dict()
 			self.page_view.blobs = dict()
 			self.action_result = None
+			self.current_uri = uri
+			self.current_ext_uri = uri
 		
 		except Exception as e:
 			
@@ -268,5 +274,7 @@ class Client:
 			self.page_view.links = dict()
 			self.page_view.blobs = dict()
 			self.action_result = None
+			self.current_uri = uri
+			self.current_ext_uri = uri
 		
 		

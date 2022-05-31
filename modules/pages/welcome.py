@@ -25,7 +25,6 @@ BROWSER_WELCOME_PAGE = \
 """
 [bg=cyan][fg=256:0][b]- - - MENU - - -[/norm]
 `
-`[fg=red][lnk=hfnp://hafnium.nPxMa1ziTfw$/index][/lnk][/norm] MAIN PAGE OFFLINE
 `[fg=green][b][lnk=help][/lnk][/norm] HELP
 
 [case=ISPAGE]
