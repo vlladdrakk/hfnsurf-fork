@@ -73,7 +73,7 @@ class UserManagePage(InternalHFNMLPage):
 			if siteuser.active:
 				isactive = '[fg=yellow][b](ACTIVE)[/norm] '
 			
-			userlist.append(f'{isactive}{uuid_as_hex(siteuser.uid)} [fg=cyan]Switch: [lnk=usermanage?action=switch?value0={uuid_as_hex(siteuser.uid)}][/lnk] Remove: [lnk=usermanage?action=remove?value0={uuid_as_hex(siteuser.uid)}][/lnk][/norm]')
+			userlist.append('{}{} [fg=cyan]Switch: [lnk=usermanage?action=switch?value0={}][/lnk] Remove: [lnk=usermanage?action=remove?value0={}][/lnk][/norm]'.format(isactive, uuid_as_hex(siteuser.uid), uuid_as_hex(siteuser.uid), uuid_as_hex(siteuser.uid)))
 		
 		return '`\n'.join(userlist)
 				

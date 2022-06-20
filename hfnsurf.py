@@ -33,22 +33,22 @@ class Browser:
 	def prompt(self):
 		
 		if self.client.current_uri:
-			prompt = f'\n{self.client.current_uri}'
+			prompt = '\n{}'.format(self.client.current_uri)
 		else:
-			prompt = f'- - no page - -'
+			prompt = '- - no page - -'
 		prompt = clrb(prompt, fg = CYAN)
 		current_user = self.client.user_storage.get_user_by_uri(self.client.current_uri)
 		
 		if current_user:
-			return f'{prompt}\n[{yellow(uuid_as_hex(current_user.uid))}] >> '
+			return '{}\n[{}] >> '.format(prompt, yellow(uuid_as_hex(current_user.uid)))
 		else:
-			return f'{prompt}\n[{red("guest")}] >> '
+			return '{}\n[{}] >> '.format(prompt, red("guest"))
 			
 	def run(self):
 		
 		cmd = ''
 		
-		rawcmd = f'hfnp://0.0.0.0:0/index'
+		rawcmd = 'hfnp://0.0.0.0:0/index'
 		uri = URI.from_str(rawcmd)
 		
 		self.client.request_page(uri)
@@ -129,7 +129,7 @@ class Browser:
 				
 			elif rawcmd in ('?','help'):
 				
-				rawcmd = f'hfnp://0.0.0.0:0/help'
+				rawcmd = 'hfnp://0.0.0.0:0/help'
 				self.client.current_uri = URI.from_str(rawcmd)
 				request_needed = True
 			
@@ -146,7 +146,7 @@ class Browser:
 				cmd = args.pop(0)
 								
 				for i, arg in enumerate(args):
-					self.client.current_uri.set_payload(f'value{i}', arg)
+					self.client.current_uri.set_payload('value{}'.format(i), arg)
 					
 				self.client.current_uri.set_payload('action',cmd)
 				request_needed = True

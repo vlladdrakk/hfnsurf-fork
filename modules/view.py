@@ -69,13 +69,13 @@ class PageView:
 			scroll = int((self.current_line / len(self.content)) * 100)
 		else:
 			scroll = 100
-		indicator = f'{scroll}%'
+		indicator = '{}%'.format(scroll)
 		#print(clr('<< MINUS'+'---'+scroll+'-'*(sz.columns-25-len(scroll))+'RETURN >>',fg=BLACK,bg=PURPLE))
 		
 		if self.scroll_back:
-			print(clr(f'BCK-(".l" to scroll forward, ".=" to jump to start)-{"-"*(sz.columns-59-len(indicator))}-{indicator}-',fg=BLACK,bg=PURPLE))
+			print(clr('BCK-(".l" to scroll forward, ".=" to jump to start)-{}-{}-'.format("-"*(sz.columns-59-len(indicator)), indicator),fg=BLACK,bg=PURPLE))
 		else:
-			print(clr(f'FWD-(".l" to scroll back, ".=" to jump to start)----{"-"*(sz.columns-59-len(indicator))}-{indicator}-',fg=BLACK,bg=PURPLE))
+			print(clr('FWD-(".l" to scroll back, ".=" to jump to start)----{}-{}-'.format("-"*(sz.columns-59-len(indicator)), indicator),fg=BLACK,bg=PURPLE))
 		
 		
 	def refresh_old(self):
@@ -106,6 +106,6 @@ class PageView:
 		
 		print('')
 		totalscr = int(float(len(self.content))/(endline - startline))+1
-		scroll = f'(scroll {self.current_portion+1}/{totalscr})'
+		scroll = '(scroll {}/{})'.format(self.current_portion+1, totalscr)
 		print(clr('<< MINUS'+'---'+scroll+'-'*(sz.columns-25-len(scroll))+'RETURN >>',fg=BLACK,bg=PURPLE))
 		

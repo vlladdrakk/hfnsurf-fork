@@ -18,25 +18,25 @@ from hafnium.network.paging.uri import *
 ###############################################################################
 
 def red(s):
-	return f'\033[31m{s}\033[0m'
+	return '\033[31m{}\033[0m'.format(s)
 
 def green(s):
-	return f'\033[32m{s}\033[0m'
+	return '\033[32m{}\033[0m'.format(s)
 	
 def yellow(s):
-	return f'\033[93m{s}\033[0m'
+	return '\033[93m{}\033[0m'.format(s)
 		
 def cyan(s):
-	return f'\033[96m{s}\033[0m'
+	return '\033[96m{}\033[0m'.format(s)
 	
 def orange(s):
-	return f'\033[33m{s}\033[0m'
+	return '\033[33m{}\033[0m'.format(s)
 	
 def pink(s):
-	return f'\033[95m{s}\033[0m'
+	return '\033[95m{}\033[0m'.format(s)
 	
 def blue(s):
-	return f'\033[93m{s}\033[0m'
+	return '\033[93m{}\033[0m'.format(s)
 
 RED = ['31','41']
 GREEN = ['32','42']
@@ -50,13 +50,13 @@ PURPLE = ['35','45']
 def clr(s, fg = WHITE, bg = BLACK):
 	f = fg[0]
 	b = bg[1]
-	return f'\033[{f}m\033[{b}m{s}\033[0m'
+	return '\033[{}m\033[{}m{}\033[0m'.format(f, b, s)
 	
 def clrb(s, fg = WHITE, bg = BLACK):
 	
 	f = fg[0]
 	b = bg[1]
-	return f'\033[1m\033[{f}m\033[{b}m{s}\033[0m'
+	return '\033[1m\033[{}m\033[{}m{}\033[0m'.format(f, b, s)
 
 
 def line():
