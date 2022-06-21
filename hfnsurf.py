@@ -1,4 +1,3 @@
-# -*- coding: future_fstrings -*-
 # Copyright (c) 2022 Keith Aprilnight
 # 
 # This file is part of hfnsurf and is licenced under the terms of MIT License.

@@ -31,7 +31,7 @@ class VirtualFSFile(ObjectTreeNode):
 		self.content = content
 		
 	def __repr__(self):
-		return f'{self.full_name}'
+		return '{}'.format(self.full_name)
 		
 	@property
 	def full_name(self):
@@ -76,7 +76,7 @@ class VirtualFSFolder(ObjectTreeNode):
 		self.name = name
 			
 	def __repr__(self):
-		return f'{self.name}/'
+		return '{}/'.format(self.name)
 		
 	@property
 	def full_name(self):

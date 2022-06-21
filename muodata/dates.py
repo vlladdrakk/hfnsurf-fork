@@ -110,17 +110,17 @@ def date_from_shortrep(dtstr):
 def date_shortrep(dt, seconds = False):
 
 	mn = MONTHS[dt.month-1]	
-	res = f'{dt.day} {mn}'
+	res = '{} {}'.format(dt.day, mn)
 	
 	if dt.year != datetime.now().year:
-		res += f' {str(dt.year)[-2:]}'
+		res += ' {}'.format(str(dt.year)[-2:])
 	
 	if isinstance(dt, datetime):
 		if dt.hour>0 and dt.minute>0:
 			if seconds:
-				res += f' {str(dt.hour).zfill(2)}:{str(dt.minute).zfill(2)}:{str(dt.second).zfill(2)}'
+				res += ' {}:{}:{}'.format(str(dt.hour).zfill(2), str(dt.minute).zfill(2), str(dt.second).zfill(2))
 			else:
-				res += f' {str(dt.hour).zfill(2)}:{str(dt.minute).zfill(2)}'
+				res += ' {}:{}'.format(str(dt.hour).zfill(2), str(dt.minute).zfill(2))
 		
 	return res
 	

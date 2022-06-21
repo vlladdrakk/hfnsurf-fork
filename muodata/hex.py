@@ -33,7 +33,7 @@ def hexstring_to_hexbytelist(s):
 def intlist_hexdump(src_lst, cols = 8):
 	
 	lst = src_lst[::]
-	res = [f'- - - -\nhexdump: {len(lst)} bytes']
+	res = ['- - - -\nhexdump: {} bytes'.format(len(lst))]
 
 	colcount = 0
 	hexes = []
@@ -59,7 +59,7 @@ def intlist_hexdump(src_lst, cols = 8):
 				
 			chstr = ''.join(chars)
 			
-			res.append(f'{hexstr}| {chstr}')
+			res.append('{}| {}'.format(hexstr, chstr))
 			hexes = []
 			chars = []
 		

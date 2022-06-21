@@ -144,7 +144,7 @@ def list_as_table(lst, cols = 4):
 def intlist_decdump(src_lst, cols = 8):
 	
 	lst = src_lst[::]
-	res = [f'- - - -\ndecdump: {len(lst)} bytes']
+	res = ['- - - -\ndecdump: {} bytes'.format(len(lst))]
 
 	colcount = 0
 	decs = []
@@ -170,7 +170,7 @@ def intlist_decdump(src_lst, cols = 8):
 				
 			chstr = ''.join(chars)
 			
-			res.append(f'{decstr}| {chstr}')
+			res.append('{}| {}'.format(decstr, chstr))
 			decs = []
 			chars = []
 	
