@@ -149,4 +149,4 @@ class HafniumPagingRouter(HafniumServerRouter):
 		
 		except Exception as e:
 	
-			return ErrorResponse(UNKNOWN_ERROR, f"Unknown error has occured: {e}"), tail
+			return ErrorResponse(UNKNOWN_ERROR, "Unknown error has occured: {}".format(e)), tail

@@ -39,8 +39,8 @@ from processors.seqhash_processor import *
 def error_template(code, msg):
 	
 	res = "+ + + + + + AN ERROR HAS OCCURED + + + + + +\n"
-	res += f"Error code: {code}\n"
-	res += f"Error message: {msg}\n"
+	res += "Error code: {}\n".format(code)
+	res += "Error message: {}\n".format(msg)
 	res += "+ + + + + + + + + + +  + + + + + + + + + + +\n"
 	
 	return red(res).split('\n')
@@ -270,7 +270,7 @@ class Client:
 		
 		except Exception as e:
 			
-			self.page_view.content = error_template(str(UNKNOWN_CLIENT_ERROR), f"An unknown client-side error has occured: {e}")
+			self.page_view.content = error_template(str(UNKNOWN_CLIENT_ERROR), "An unknown client-side error has occured: {}".format(e))
 			self.page_view.links = dict()
 			self.page_view.blobs = dict()
 			self.action_result = None

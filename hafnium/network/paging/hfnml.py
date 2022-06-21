@@ -108,7 +108,7 @@ def ucj(cs: str, i: int) -> str:
 	if rightpad<0: rightpad = 0
 	if leftpad<0: leftpad = 0
 	
-	return f"{' '*leftpad}{cs}{' '*rightpad}"
+	return "{}{}{}".format(' '*leftpad, cs, ' '*rightpad)
 	
 
 def urj(cs: str, i: int) -> str:
@@ -118,7 +118,7 @@ def urj(cs: str, i: int) -> str:
 	
 	l = i - len(s)
 	
-	return f"{' '*l}{cs}"
+	return "{}{}".format(' '*l, cs)
 	
 	
 def ulj(cs: str, i: int) -> str:
@@ -128,7 +128,7 @@ def ulj(cs: str, i: int) -> str:
 	
 	l = i - len(s)
 	
-	return f"{cs}{' '*l}"
+	return "{}{}".format(cs, ' '*l)
 	
 
 def chop_width(cs: str, w: int) -> list[str]:
@@ -526,10 +526,10 @@ class HFNMLTemplate:
 						res.append("\033[20m")
 						
 					elif token.tag == 'fg' and token.attribute:
-						res.append(f"\033[{self.color_fg(token.attribute)}m")
+						res.append("\033[{}m".format(self.color_fg(token.attribute)))
 						
 					elif token.tag == 'bg' and token.attribute:
-						res.append(f"\033[{self.color_bg(token.attribute)}m")
+						res.append("\033[{}m".format(self.color_bg(token.attribute)))
 												
 						
 			elif not (True in [check_token.imposes_ignore_text for check_token in tags_on]):

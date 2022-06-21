@@ -192,7 +192,7 @@ class URI:
 				except:
 					value = "???"
 				
-			res.append(f"{key}={value}")
+			res.append("{}={}".format(key, value))
 			
 		return '?'.join(res)
 		

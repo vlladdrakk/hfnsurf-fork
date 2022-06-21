@@ -42,7 +42,7 @@ def c_justify(s: str, i: int) -> str:
 	leftpad = int(l/2.0)
 	rightpad = l - leftpad
 	
-	return f"{' '*leftpad}{s}{' '*rightpad}"
+	return "{}{}{}".format(' '*leftpad, s, ' '*rightpad)
 	
 def r_justify(s: str, i: int) -> str:
 
@@ -50,7 +50,7 @@ def r_justify(s: str, i: int) -> str:
 	
 	l = i - len(s)
 	
-	return f"{' '*l}{s}"
+	return "{}{}".format(' '*l, s)
 	
 	
 def l_justify(s: str, i: int) -> str:
@@ -59,7 +59,7 @@ def l_justify(s: str, i: int) -> str:
 	
 	l = i - len(s)
 	
-	return f"{s}{' '*l}"
+	return "{}{}".format(s, ' '*l)
 	
 cj = c_justify
 rj = r_justify
