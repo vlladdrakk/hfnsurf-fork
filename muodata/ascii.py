@@ -57,7 +57,7 @@ def int_to_unicode(num, control_replace = False):
 	if num in CONTROLS:
 		
 		if control_replace:
-			return f'<{CONTROLS[num]}>'
+			return '<{}>'.format(CONTROLS[num])
 			
 		else:
 			return '·'
