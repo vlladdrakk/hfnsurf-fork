@@ -31,11 +31,11 @@ REPLACEMENTS = {
 }
 
 
-def b64q_encode(b: bytes,
+def b64q_encode(byteData: bytes,
 				replacements: dict[str, str] = REPLACEMENTS,
 				altchars: bytes = ALTCHARS) -> str:
 	
-	res = base64.b64encode(b, altchars = altchars).decode('utf-8')
+	res = base64.b64encode(byteData, altchars = altchars).decode('utf-8')
 	
 	for rem, repl in replacements.items():
 		res = res.replace(rem, repl)
